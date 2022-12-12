@@ -12,8 +12,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"  ){
 
     if($_POST['SubmitType'] == "makeNewPlan"){
 
-
-        
         $plans_control->control_insert_into_Plans($_POST['planName']);
 
          
@@ -48,7 +46,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"  ){
 <body>
     <h2>Welcom : <?= $_SESSION["user_name"] ?></h2>
 
-    <button onclick="showPlanForm()" >Make a plan</button>
+    <button onclick="showPlanForm('planInsert')" >Make a plan</button>
 
 
     <div    id="planInsert" >
@@ -61,24 +59,30 @@ if($_SERVER["REQUEST_METHOD"] == "POST"  ){
 
         </form>
 
-        <button onclick="hidePlanForm()" >Forget</button>
+        <button onclick="hidePlanForm('planInsert')" >Forget</button>
 
     </div>
 
 
     <?php
 
-        foreach($plans_control->show_user_plans() as $value){
 
-            echo $value;
+        $plans = $plans_control->show_user_plans();
+
+        if($plans == "No plans"){
+
+            echo $plans;
+
+        }else{
+
+            foreach($plans as $value){
+
+                echo $value;
+    
+            }
 
         }
-        
 
-        
-        
-        
-       
 
 
     ?>

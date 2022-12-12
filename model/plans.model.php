@@ -75,11 +75,23 @@ class PlansModel extends DataBase {
         $result->close();
         $query->close();
         $mysqli->close();
-        
-        $user_plans_id = strval($row['GROUP_CONCAT(id)']);
-        $user_plans_id = explode("," ,   $user_plans_id );
 
-        return $user_plans_id;
+        $user_plans_id = strval($row['GROUP_CONCAT(id)']);
+
+        if(empty($user_plans_id)){
+
+            return "No plans";
+            
+
+        }else{
+ 
+            $user_plans_id = explode("," ,   $user_plans_id );
+
+            return $user_plans_id;
+
+        }
+
+        
     }
 
     protected function select_plan($plan_id){
@@ -108,8 +120,6 @@ class PlansModel extends DataBase {
     }
 
     protected function delete_plan($plan_id){
-
-
         
         
         $mysqli = $this->make_connection();
@@ -128,6 +138,52 @@ class PlansModel extends DataBase {
 
 
     }
+
+
+    protected function insert_into_lists($list_name , $planId ){
+
+
+        $mysqli = $this->make_connection();
+
+        $list_name = $mysqli->real_escape_string($list_name);
+        $planId = $mysqli->real_escape_string($planId);
+        
+
+        $query = $mysqli->prepare("INSERT INTO lists(name , planId ) VALUES( ? , ? )  ");
+        $query->bind_param("si" , $list_name , $planId );
+        $query->execute();
+
+        $query->close();
+        $mysqli->close();
+
+        return ;
+        
+    }
+
+    protected function get_plan_name($plan_id){
+
+        $mysqli = $this->make_connection();
+
+        $plan_id = $mysqli->real_escape_string($plan_id);
+        
+        
+
+        $query = $mysqli->prepare("SELECT * FROM plans WHERE id = ? ");
+        $query->bind_param("i" , $plan_id  );
+        $query->execute();
+
+        $result = $query->get_result();
+        $row = $result->fetch_assoc();
+
+        $result->close();
+        $query->close();
+        $mysqli->close();
+
+        return $row['planName'] ;
+
+    }
+
+
 
 }
 

@@ -21,7 +21,7 @@ class PLansControl extends PlansModel {
         $plans = [];
         $plans_data = $this->select_user_plans();
 
-        if(empty($plans_data)){
+        if($plans_data == "No plans"){
 
             return "No plans";
 
@@ -38,6 +38,8 @@ class PLansControl extends PlansModel {
 
         }
 
+        return $plans_data;
+
     }
 
     public function plan_information($plan_name , $plan_id){
@@ -52,12 +54,7 @@ class PLansControl extends PlansModel {
         $html .= "           <br> ";
         $html .= "          <input type='submit' name='delete' value='delete'> ";
         $html .= "      </form> ";
-        $html .= "      <form action='' method='POST'> ";
-        $html .= "          <input type='hidden' name='id' value='$plan_id'> ";
-        $html .= "          <input type='hidden' name='SubmitType' value='update'> ";
-        $html .= "           <br> ";
-        $html .= "          <input type='submit' name='update' value='update'> ";
-        $html .= "      </form> ";
+        $html .= " <a href='/../../backendChallenge/toDoList/view/planning.view.php?plan=$plan_id'> link </a> ";
         $html .= " </div> ";
         
 
@@ -72,6 +69,21 @@ class PLansControl extends PlansModel {
         return $this->delete_plan($plan_id);
         
         
+    }
+
+    public function control_insert_into_lists($list_name , $planId , $plan_name   ){
+        
+         
+        $this->insert_into_lists($list_name , $planId );
+        return header("Location: /../../backendChallenge/toDoList/view/planning.view.php?plan=$planId?planName=$plan_name");
+         
+        
+    }
+
+    public function control_get_plan_name($plan_id){
+
+        return $this->get_plan_name($plan_id);
+
     }
 
 }
