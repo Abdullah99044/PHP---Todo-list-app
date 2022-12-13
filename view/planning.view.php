@@ -8,18 +8,18 @@ $app->user_authentication();
 $plans_control = new PLansControl;
 
 $plan_id = $_GET['plan'];
+
+
+
 $plan_name = $plans_control->control_get_plan_name($plan_id );
 
 if($_SERVER["REQUEST_METHOD"] == "POST"  ){
 
     if($_POST['SubmitType'] == "makeNewlist"){
 
-
-        
-
         $list_name = $_POST['listName'];
         
-        $plans_control->control_insert_into_lists($list_name , $plan_id , $plan_name);
+        $plans_control->get_insert_into_tabels($list_name , $plan_id , "lists");
         
 
     }
@@ -27,22 +27,34 @@ if($_SERVER["REQUEST_METHOD"] == "POST"  ){
     if($_POST['SubmitType'] == "makeNewTask"){
 
 
-        
-        $plans_control->control_insert_into_Plans($_POST['planName']);
+        $task_name = $_POST['taskName'];
+        $list_id = $_POST['id'];
+
+        $plans_control->get_insert_into_tabels($task_name , $list_id  , "tasks");
 
     }
 
-    if($_POST['SubmitType'] == "deleteList"){
+    if($_POST['SubmitType'] == "delete"){
         
-        echo "yes delete";
-        $plans_control->control_delete_plan($_POST["id"]);
-         
-    }
+        
 
-    if($_POST['SubmitType'] == "deleteTask"){
+        if($_POST['deleteType'] == "lists"){
+
+            $list_id = $_POST['id'];
+            $plans_control->get_delete_info($list_id , "lists" );
+
+        }
         
-        echo "yes delete";
-        $plans_control->control_delete_plan($_POST["id"]);
+        if($_POST['deleteType'] == "tasks"){
+            
+
+            $task_id = $_POST['id'];
+
+            $plans_control->get_delete_info($task_id , "tasks");
+
+        }
+     
+       
          
     }
     
@@ -94,23 +106,21 @@ if($_SERVER["REQUEST_METHOD"] == "POST"  ){
     <?php
 
 
-        // $plans = $plans_control->show_user_plans();
+        $list = $plans_control->show_user_data_from($plan_id , "lists");
 
-        // if($plans == "No plans"){
+        if($list == "Nothing"){
 
-        //     echo $plans;
+            echo $list;
 
-        // }else{
+        }else{
 
-        //     foreach($plans as $value){
+            foreach($list as $value){
 
-        //         echo $value;
+                echo $value;
     
-        //     }
+            }
 
-        // }
-
-
+        }
 
     ?>
     

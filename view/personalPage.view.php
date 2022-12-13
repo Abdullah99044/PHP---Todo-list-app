@@ -12,15 +12,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"  ){
 
     if($_POST['SubmitType'] == "makeNewPlan"){
 
-        $plans_control->control_insert_into_Plans($_POST['planName']);
+        $plans_control->get_insert_into_tabels($_POST['planName'] , " " , "plans");
 
-         
+        // Hoef niet te invul de tweede argument want we hebben het niet nodig
+ 
     }
 
     if($_POST['SubmitType'] == "delete"){
         
         echo "yes delete";
-        $plans_control->control_delete_plan($_POST["id"]);
+        $plans_control->get_delete_info($_POST["id"] , "plans");
          
     }
     
@@ -49,7 +50,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"  ){
     <button onclick="showPlanForm('planInsert')" >Make a plan</button>
 
 
-    <div    id="planInsert" >
+    <div  style="display: none;"  id="planInsert" >
 
         <form  action="" method="POST">
 
@@ -67,11 +68,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"  ){
     <?php
 
 
-        $plans = $plans_control->show_user_plans();
+        $plans = $plans_control->show_user_data_from(" " , "plans"); 
 
-        if($plans == "No plans"){
+        // Hoef niet te invul de eerste argument want we hebben het niet nodig
+        // We selecteren plans door user id en voor dit hebben we een functie binnen select_group() function
 
-            echo $plans;
+        if($plans == "Nothing"){
+
+            echo "No plans";
 
         }else{
 

@@ -3,11 +3,11 @@
 
 
 function showPlanForm(id){
-    return document.getElementById('planInsert').style.display = 'block';
+    return document.getElementById(id).style.display = 'block';
 }
 
 function hidePlanForm(id){
-    return document.getElementById('planInsert').style.display = 'none';
+    return document.getElementById(id).style.display = 'none';
 }
 
  

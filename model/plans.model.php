@@ -7,7 +7,7 @@ require 'C:\Program Files\ammps2\Ampps\www\backendChallenge\toDoList\model\dataB
 class PlansModel extends DataBase {
 
 
-    // Dit functie nemt de user id uit de users tabel om het te toevoegen in of te lezen uit de plans tabel 
+    // Dit functie neemt de user id uit de users tabel om het te toevoegen in of te lezen uit de plans tabel 
 
     protected function get_userId(){
 
@@ -33,40 +33,80 @@ class PlansModel extends DataBase {
 
     }
 
-    // Dit functie insert data in tabels plan
+    // Dit functie insert data in tabels  
 
 
-    protected function insert_into_plans($plan_name , $userId){
+    protected function insert_into_tabels($name , $id , $tabel){
 
 
         $mysqli = $this->make_connection();
 
-        $plan_name = $mysqli->real_escape_string($plan_name);
+        $name = $mysqli->real_escape_string($name);
 
-        $query = $mysqli->prepare("INSERT INTO plans(planName , userId ) VALUES(? , ? )  ");
-        $query->bind_param("si" , $plan_name , $userId);
+        if($tabel == "plans"){
+
+            $id = $this->get_userId();
+            $query = $mysqli->prepare("INSERT INTO plans(name , userId ) VALUES(? , ? )  ");
+            $query->bind_param("si" , $name , $id);
+
+        }elseif($tabel == "lists"){
+
+            $query = $mysqli->prepare("INSERT INTO lists(name , planId ) VALUES(? , ? )  ");
+            $query->bind_param("si" , $name , $id);
+
+        }else{
+
+            $query = $mysqli->prepare("INSERT INTO tasks(name , listId ) VALUES(? , ? )  ");
+            $query->bind_param("si" , $name , $id);
+        }
+       
+      
         $query->execute();
 
         $query->close();
         $mysqli->close();
 
-        return header('Location: /../../backendChallenge/toDoList/view/personalPage.view.php');
+        if($tabel == "plans"){
+
+            return header('Location: /../../backendChallenge/toDoList/view/personalPage.view.php');
+
+        }
+
+        return;
+        
         
     }
 
-     // Dit functie lezt de user plannen   uit de tabels plan 
+     // Dit functie leest de data uit de ingevoerd tabel
 
-    protected function select_user_plans(){
 
-        $user_id = $this->get_userId();
+    protected function select_group($id , $tabel){
+
+        
 
         $mysqli = $this->make_connection();
 
           
-         
+        if($tabel == "plans"){
 
-        $query = $mysqli->prepare("SELECT  GROUP_CONCAT(id) FROM plans WHERE userId = ? ");
-        $query->bind_param("i" , $user_id);
+            $user_id = $this->get_userId();
+            $query = $mysqli->prepare("SELECT  GROUP_CONCAT(id) FROM plans WHERE userId = ? ");
+            $query->bind_param("i" , $user_id);
+
+        }elseif($tabel == "lists"){
+
+            $query = $mysqli->prepare("SELECT  GROUP_CONCAT(id) FROM lists WHERE planId = ? ");
+            $query->bind_param("i" , $id);
+            
+        }else{
+
+            $query = $mysqli->prepare("SELECT  GROUP_CONCAT(id) FROM tasks WHERE listId = ? ");
+            $query->bind_param("i" , $id);
+
+        }
+
+        
+        
         $query->execute();
 
         $result = $query->get_result();
@@ -76,34 +116,50 @@ class PlansModel extends DataBase {
         $query->close();
         $mysqli->close();
 
-        $user_plans_id = strval($row['GROUP_CONCAT(id)']);
+        $group_id = strval($row['GROUP_CONCAT(id)']);
 
-        if(empty($user_plans_id)){
+        if(empty($group_id)){
 
-            return "No plans";
+            return "Nothing";
             
 
         }else{
  
-            $user_plans_id = explode("," ,   $user_plans_id );
+            $group_id = explode("," ,   $group_id );
 
-            return $user_plans_id;
+            return $group_id;
 
         }
 
         
     }
 
-    protected function select_plan($plan_id){
+
+    // Dit functie selecteert row uit de ingevoerd tabel
+
+    protected function select_from_tabel($id , $tabel){
 
 
-        $plan_id = intval($plan_id);
+        $id = intval($id);
 
         $mysqli = $this->make_connection();
 
+        if($tabel == "plans"){
 
-        $query = $mysqli->prepare("SELECT * FROM plans WHERE id = ? ");
-        $query->bind_param("i" , $plan_id);
+            $query = $mysqli->prepare("SELECT * FROM plans WHERE id = ? ");
+
+        }elseif($tabel == "lists"){
+
+            $query = $mysqli->prepare("SELECT * FROM lists WHERE id = ? ");
+
+        }else{
+
+            $query = $mysqli->prepare("SELECT * FROM tasks WHERE id = ? ");
+
+        }
+
+       
+        $query->bind_param("i" ,  $id);
         $query->execute();
 
         $result = $query->get_result();
@@ -119,15 +175,33 @@ class PlansModel extends DataBase {
 
     }
 
-    protected function delete_plan($plan_id){
+
+    // Dit functie verwijdert data uit de ingevoerd tabel
+
+
+    protected function delete_info($id , $tabel){
         
         
         $mysqli = $this->make_connection();
-        $plan_id = $mysqli->real_escape_string($plan_id);
-        $plan_id = intval($plan_id);
+        $id = $mysqli->real_escape_string($id);
+        $id = intval($id);
 
-        $query = $mysqli->prepare("DELETE FROM plans WHERE id = ? ");
-        $query->bind_param("i" , $plan_id);
+        if($tabel == "plans"){
+
+            $query = $mysqli->prepare("DELETE FROM plans WHERE id = ? ");
+
+        }elseif($tabel == "lists"){
+
+            $query = $mysqli->prepare("DELETE FROM lists WHERE id = ? ");
+
+        }elseif($tabel == "tasks"){
+            
+        
+            $query = $mysqli->prepare("DELETE FROM tasks WHERE id = ? ");
+             
+        }
+       
+        $query->bind_param("i" , $id);
         $query->execute();
 
         
@@ -139,26 +213,7 @@ class PlansModel extends DataBase {
 
     }
 
-
-    protected function insert_into_lists($list_name , $planId ){
-
-
-        $mysqli = $this->make_connection();
-
-        $list_name = $mysqli->real_escape_string($list_name);
-        $planId = $mysqli->real_escape_string($planId);
-        
-
-        $query = $mysqli->prepare("INSERT INTO lists(name , planId ) VALUES( ? , ? )  ");
-        $query->bind_param("si" , $list_name , $planId );
-        $query->execute();
-
-        $query->close();
-        $mysqli->close();
-
-        return ;
-        
-    }
+ 
 
     protected function get_plan_name($plan_id){
 
@@ -179,7 +234,7 @@ class PlansModel extends DataBase {
         $query->close();
         $mysqli->close();
 
-        return $row['planName'] ;
+        return $row['name'] ;
 
     }
 

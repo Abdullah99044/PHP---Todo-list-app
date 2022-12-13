@@ -6,80 +6,129 @@ require 'C:\Program Files\ammps2\Ampps\www\backendChallenge\toDoList\model\plans
 
 class PLansControl extends PlansModel {
 
-    public function control_insert_into_Plans($plan_name){
+    public function get_insert_into_tabels($name , $id , $tabel){
         
-        $id = $this->get_userId();
+     
         
-        if(!empty($plan_name)){
-            return $this->insert_into_plans( $plan_name , $id);
+        if(!empty($name)){
+            return $this-> insert_into_tabels( $name , $id , $tabel);
         }
         
     }
 
-    public function show_user_plans(){
+    public function show_user_data_from($id , $tabel){
 
-        $plans = [];
-        $plans_data = $this->select_user_plans();
+        $data = [];
+        $user_data = $this->select_group($id , $tabel);
 
-        if($plans_data == "No plans"){
+        if($user_data == "Nothing"){
 
-            return "No plans";
+            return "Nothing";
 
 
         }else{
 
-            foreach($plans_data as $value){
+            foreach($user_data as $value){
 
-                $user_plan = $this->select_plan($value);
-                array_push($plans , $this->plan_information($user_plan['planName'] , $user_plan['id']));
+                $row = $this->select_from_tabel($value , $tabel);
+                array_push($data , $this->plan_information($row['name'] , $row['id'] , $tabel));
             }
 
-            return $plans;
+            return $data;
 
         }
 
-        return $plans_data;
+        return $user_data;
 
     }
 
-    public function plan_information($plan_name , $plan_id){
+    public function plan_information($name , $id , $tabel){
 
         $html = " ";
         $html .= "           <br> ";
         $html .= " <div> ";
         $html .= "      <form action='' method='POST'> ";
-        $html .= "          <label> $plan_name  </label> ";
-        $html .= "          <input type='hidden' name='id' value='$plan_id'> ";
-        $html .= "          <input type='hidden' name='SubmitType' value='delete'> ";
+        $html .= "          <label> $name  $id </label> ";
+        $html .= "          <input type='hidden' name='id' value='$id'> ";
+
+        if($tabel == "plans"){
+
+            $html .= "          <input type='hidden' name='SubmitType' value='delete'> ";
+            $html .= "          <input type='hidden' name='deleteType' value='plans'> ";
+
+
+        }elseif($tabel == "lists"){
+
+            $html .= "          <input type='hidden' name='SubmitType' value='delete'> ";
+            $html .= "          <input type='hidden' name='deleteType' value='lists'> ";
+
+
+        }else{
+
+            $html .= "          <input type='hidden' name='SubmitType' value='delete'> ";
+            $html .= "          <input type='hidden' name='deleteType' value='tasks'> ";
+
+
+        }
+        
         $html .= "           <br> ";
         $html .= "          <input type='submit' name='delete' value='delete'> ";
         $html .= "      </form> ";
-        $html .= " <a href='/../../backendChallenge/toDoList/view/planning.view.php?plan=$plan_id'> link </a> ";
+
+        if($tabel == "plans"){
+
+            $html .= " <a href='/../../backendChallenge/toDoList/view/planning.view.php?plan=$id'> link </a> ";
+
+        }elseif($tabel == "lists"){
+
+ 
+            $html .= " <div    id='taskInsert' > ";
+
+            $html .= "      <form action='' method='POST'> ";
+            $html .= "          <input type='text' name='taskName' placeholder='Add a task'> ";
+            $html .= "          <input type='hidden' name='id' value='$id'> ";
+            $html .= "          <input type='hidden' name='SubmitType' value='makeNewTask'> ";
+            $html .= "           <br> ";
+            $html .= "          <input type='submit' name='submit' value='submit'> ";
+            $html .= "      </form> ";
+
+            $task = $this->show_user_data_from($id , "tasks");
+
+            if($task == "Nothing"){
+
+                $html .= "no tasks";
+
+            }else{
+
+                foreach($task as $value){
+
+                    $html .= $value  ;
+        
+                }
+
+            }
+
+            $html .= " </div> ";
+
+        }
+
+       
         $html .= " </div> ";
         
 
         return $html;
     }
 
-    public function control_delete_plan($plan_id){
+    public function get_delete_info($id , $tabel){
         
-        
-        
-        
-        return $this->delete_plan($plan_id);
+        return $this->delete_info($id , $tabel);
         
         
     }
 
-    public function control_insert_into_lists($list_name , $planId , $plan_name   ){
-        
-         
-        $this->insert_into_lists($list_name , $planId );
-        return header("Location: /../../backendChallenge/toDoList/view/planning.view.php?plan=$planId?planName=$plan_name");
-         
-        
-    }
+    
 
+  
     public function control_get_plan_name($plan_id){
 
         return $this->get_plan_name($plan_id);
