@@ -72,6 +72,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"  ){
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php require 'C:\Program Files\ammps2\Ampps\www\backendChallenge\toDoList\style.php'; ?>  
+
     <title>Document</title>
 
     <script src="/../../backendChallenge/toDoList/script.js" >
@@ -85,46 +87,54 @@ if($_SERVER["REQUEST_METHOD"] == "POST"  ){
 <body>
      
 
+    <?php  require   'pageParts/header.view.php'; ?>
+
+
+    <article>
     
-    <button onclick="showPlanForm('planInsert')" >Make a plan</button>
+        <button onclick="showPlanForm('planInsert')" >Make a plan</button>
 
 
-    <div    id="planInsert" >
+        <div    id="planInsert" >
 
-        <form  action="" method="POST">
+            <form  action="" method="POST">
 
-            <input type="text" name="listName">
-            <input type="hidden" name="SubmitType" value="makeNewlist">
-            <input type="submit" value="Submit">
+                <input type="text" name="listName">
+                <input type="hidden" name="SubmitType" value="makeNewlist">
+                <input type="submit" value="Submit">
 
-        </form>
+            </form>
 
-        <button onclick="hidePlanForm('planInsert')" >Forget</button>
+            <button onclick="hidePlanForm('planInsert')" >Forget</button>
 
-    </div>
+        </div>
 
-    <?php
+        <?php
 
 
-        $list = $plans_control->show_user_data_from($plan_id , "lists");
+            $list = $plans_control->show_user_data_from($plan_id , "lists");
 
-        if($list == "Nothing"){
+            if($list == "Nothing"){
 
-            echo $list;
+                echo $list;
 
-        }else{
+            }else{
 
-            foreach($list as $value){
+                foreach($list as $value){
 
-                echo $value;
-    
+                    echo $value;
+        
+                }
+
             }
 
-        }
-
-    ?>
-    
+        ?>
         
+    </article>
+
+    <?php  require   'pageParts/footer.view.php';   ?>
+
+
     
 </body>
 </html>

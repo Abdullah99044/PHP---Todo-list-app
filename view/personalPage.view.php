@@ -42,12 +42,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST"  ){
     <title>Document</title>
 
     <script src="/../../backendChallenge/toDoList/script.js" ></script>
+    <?php require 'C:\Program Files\ammps2\Ampps\www\backendChallenge\toDoList\style.php'; ?>  
 
 </head>
 <body>
+
+    <?php  require   'pageParts/header.view.php'; ?>
+
+
+    <a href='/../../backendChallenge/toDoList/view/logout.php'> LOGOUT </a> 
+
+    <article>
+
     <h2>Welcom : <?= $_SESSION["user_name"] ?></h2>
 
     <button onclick="showPlanForm('planInsert')" >Make a plan</button>
+
 
 
     <div  style="display: none;"  id="planInsert" >
@@ -88,8 +98,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"  ){
         }
 
 
+       
 
     ?>
+    
+    </article>
+
+    
+    <?php  require   'pageParts/footer.view.php';  ?>
     
         
     

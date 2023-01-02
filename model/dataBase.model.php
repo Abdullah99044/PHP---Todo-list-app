@@ -21,11 +21,11 @@ class DataBase {
 
         if($this->make_connection()){
 
-            return true;
+            return;
 
         }else{
             die("Bad connection!");
-            return false;
+            return;
         }
     }
 
@@ -34,6 +34,13 @@ class DataBase {
 
         $_SESSION["user_name"] = $user_name;  
         return $_SESSION["isLogged"] = TRUE;
+    }
+
+    public function log_out(){
+
+        session_destroy();
+
+        return header('Location: /../../backendChallenge/toDoList/index.php'); 
     }
 
 
