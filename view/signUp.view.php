@@ -40,15 +40,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     <article>
 
-        <div>
+        <h2><?= $warning_code ?></h2>
 
-            <h2><?= $warning_code ?></h2>
+        <div class="signUpBox">
             <form action="" method="POST">
-                <input type="text" placeholder="Your name" name="name" > 
-                <input type="text" placeholder="Username"  name="userName">
-                <input type="password" placeholder="Password" name="passWord">
-                <input type="text" placeholder="email" name="email" >
-                <input type="submit" value="Sign Up">
+                <input  class="signUpForm"      type="text" placeholder="Your name" name="name" > 
+                <input  class="signUpForm"      type="text" placeholder="Username"  name="userName">
+                <input  class="signUpForm"      type="password" placeholder="Password" name="passWord">
+                <input  class="signUpForm"      type="text" placeholder="email" name="email" >
+                <input  class="signUpSubmmit"   type="submit" value="Sign Up">
             </form>
         </div>
 

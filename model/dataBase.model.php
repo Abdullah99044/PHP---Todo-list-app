@@ -50,6 +50,9 @@ class DataBase {
 
             return header('Location: /../../backendChallenge/toDoList/index.php'); 
             
+        }else {
+
+            return true;
         }
     }
 

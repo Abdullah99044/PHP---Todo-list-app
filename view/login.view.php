@@ -24,7 +24,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 }
 
 
-
+ 
 
 
 
@@ -48,14 +48,20 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     <article>
         
-        <div>
+        <h2 class="loginPageWarning"><?=$warning ?></h2>
 
-            <h2><?=$warning ?></h2>
-            <form action="" method="POST">
-                <input type="text" placeholder="Username"  name="userName">
-                <input type="password" placeholder="Password" name="passWord">
-                <input type="submit" value="Login">
-            </form>
+        <div class="loginBox">
+
+            <div>
+
+                <form action="" method="POST">
+                    <input class="loginForm" type="text" placeholder="Username"  name="userName">
+                    <input class="loginForm" type="password" placeholder="Password" name="passWord">
+                    <input class="loginSubmmit" type="submit" value="Login">
+                </form>
+
+            </div>
+
         </div>
 
     </article>

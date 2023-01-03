@@ -50,29 +50,44 @@ if($_SERVER["REQUEST_METHOD"] == "POST"  ){
     <?php  require   'pageParts/header.view.php'; ?>
 
 
-    <a href='/../../backendChallenge/toDoList/view/logout.php'> LOGOUT </a> 
+     
 
     <article>
 
-    <h2>Welcom : <?= $_SESSION["user_name"] ?></h2>
-
-    <button onclick="showPlanForm('planInsert')" >Make a plan</button>
 
 
+        <div class="headerBox">
 
-    <div  style="display: none;"  id="planInsert" >
+            <h2 class="welcoming" >Welcom : <?= $_SESSION["user_name"] ?></h2>
 
-        <form  action="" method="POST">
+            <button class="makingPlanButton" onclick="showPlanForm('planInsert')" >Make a plan</button>
 
-            <input type="text" name="planName">
-            <input type="hidden" name="SubmitType" value="makeNewPlan">
-            <input type="submit" value="Submit">
 
-        </form>
+            <div class="logout" >
 
-        <button onclick="hidePlanForm('planInsert')" >Forget</button>
+                <a  href='/../../backendChallenge/toDoList/view/logout.php'> LOGOUT </a> 
 
-    </div>
+            </div>
+
+
+        </div>
+
+            <div  style="display: none;"  id="planInsert" >
+
+                <form  action="" method="POST">
+
+                    <input type="text" name="planName">
+                    <input type="hidden" name="SubmitType" value="makeNewPlan">
+                    <input type="submit" value="Submit">
+
+                </form>
+
+                <button onclick="hidePlanForm('planInsert')" >Forget</button>
+
+
+            </div>
+
+        
 
 
     <?php
