@@ -19,7 +19,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"  ){
 
         $list_name = $_POST['listName'];
         
-        $plans_control->get_insert_into_tabels($list_name , $plan_id , "lists");
+        $plans_control->get_insert_into_tabels($list_name , " " ,  " " , $plan_id , "lists");
         
 
     }
@@ -28,9 +28,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"  ){
 
 
         $task_name = $_POST['taskName'];
+        $task_time = $_POST['taskTime'];
+         
         $list_id = $_POST['id'];
+        $task_status = $_POST['status'];
 
-        $plans_control->get_insert_into_tabels($task_name , $list_id  , "tasks");
+        $plans_control->get_insert_into_tabels($task_name , $task_time ,   $task_status ,  $list_id  , "tasks");
 
     }
 
@@ -53,10 +56,39 @@ if($_SERVER["REQUEST_METHOD"] == "POST"  ){
             $plans_control->get_delete_info($task_id , "tasks");
 
         }
+
+        
      
        
          
     }
+
+    if($_POST['SubmitType'] == "editList"){
+
+            
+        $list_name = $_POST['editedListName'];
+        $list_id   = $_POST['listId'];
+        
+       
+        $plans_control->control_edit("lists" , $list_name , $list_id , " " , " " );
+        
+
+    }
+
+    if($_POST['SubmitType'] == "editTask"){
+
+            
+        $task_name = $_POST['editTaskName'];
+        $task_id   = $_POST['editTaskid'];
+        $task_time   = $_POST['editTaskTime'];
+        $task_status   = $_POST['editStatus'];
+        
+       
+        $plans_control->control_edit("tasks" , $task_name , $task_id , $task_time , $task_status );
+        
+
+    }
+
     
     
 }
@@ -76,11 +108,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"  ){
 
     <title>Document</title>
 
-    <script src="/../../backendChallenge/toDoList/script.js" >
+    
 
      
 
-    </script>
     
 
 </head>
@@ -109,10 +140,34 @@ if($_SERVER["REQUEST_METHOD"] == "POST"  ){
 
         </div>
 
-        <?php
+
+        <form  action="" method="POST"> 
+
+            <select name='filterStatusTasks' id='filterStatusTasks'>
+                    <option value='importantTasks'>Show important tasks</option>
+                    <option value='normalTasks'>Show normal tasks</option>
+            </select> 
+            <input type='hidden' name='SubmitType' value='filterStatus'> 
+            <input type='submit' name='submit' value='filter tasks time'> 
+        </form>  
+
+        <form  action="" method="POST"> 
+                  <select name='filterTimeTasks' id='filterTimeTasks'>
+                      <option value='From high to low'>From high to low</option>
+                      <option value='From low to high'>From low to hig</option>
+                  </select> 
+                <input type='hidden' name='SubmitType' value='filterTime'> 
+                 <input type='submit' name='submit' value='filter tasks time'>
+             </form> 
+      
+
+          <?php 
 
 
-            $list = $plans_control->show_user_data_from($plan_id , "lists");
+           
+            
+ 
+            $list = $plans_control->show_user_data_from($plan_id ,  "lists" , " " , " ");
 
             if($list == "Nothing"){
 
@@ -128,8 +183,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST"  ){
 
             }
 
-        ?>
+            
+
+        ?>  
         
+                
+
+
+
+        <script src="/../../backendChallenge/toDoList/ss.js" >
+
+        </script>
+
     </article>
 
     <?php  require   'pageParts/footer.view.php';   ?>

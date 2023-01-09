@@ -9,7 +9,7 @@ class PlansModel extends DataBase {
 
     // Dit functie neemt de user id uit de users tabel om het te toevoegen in of te lezen uit de plans tabel 
 
-    protected function get_userId(){
+    protected function get_userId(){ 
 
         $user_name = $_SESSION["user_name"] ;
 
@@ -36,13 +36,14 @@ class PlansModel extends DataBase {
     // Dit functie insert data in tabels  
 
 
-    protected function insert_into_tabels($name , $id , $tabel){
+    protected function insert_into_tabels($name , $time , $status ,   $id , $tabel){
 
 
         $mysqli = $this->make_connection();
 
         $name = $mysqli->real_escape_string($name);
-
+        $time = $mysqli->real_escape_string($time);
+ 
         if($tabel == "plans"){
 
             $id = $this->get_userId();
@@ -56,8 +57,8 @@ class PlansModel extends DataBase {
 
         }else{
 
-            $query = $mysqli->prepare("INSERT INTO tasks(name , listId ) VALUES(? , ? )  ");
-            $query->bind_param("si" , $name , $id);
+            $query = $mysqli->prepare("INSERT INTO tasks(name , time  , status ,   listId ) VALUES(? , ? , ? , ?)  ");
+            $query->bind_param("sisi" , $name , $time ,   $status ,   $id);
         }
        
       
@@ -80,12 +81,12 @@ class PlansModel extends DataBase {
      // Dit functie leest de data uit de ingevoerd tabel
 
 
-    protected function select_group($id , $tabel){
+    protected function select_group($id , $tabel , $filter , $select){
 
         
 
         $mysqli = $this->make_connection();
-
+        $group = 'GROUP_CONCAT(id)';
           
         if($tabel == "plans"){
 
@@ -100,12 +101,58 @@ class PlansModel extends DataBase {
             
         }else{
 
-            $query = $mysqli->prepare("SELECT  GROUP_CONCAT(id) FROM tasks WHERE listId = ? ");
-            $query->bind_param("i" , $id);
+            if($filter == "filterOn"){
 
+                if(  $select == "From high to low"){
+
+                    $mysqli = $this->make_connection();
+                    $query = $mysqli->prepare("SELECT GROUP_CONCAT(id  order by time ASC ) FROM tasks WHERE listId = ?  ");
+                    $query->bind_param("i" , $id);
+                    
+                    $group = 'GROUP_CONCAT(id  order by time ASC )';
+
+
+                }else{
+
+                    $mysqli = $this->make_connection();
+                    $query = $mysqli->prepare("SELECT GROUP_CONCAT(id  order by time DESC ) FROM tasks WHERE listId = ?  ");
+                    $query->bind_param("i" , $id);
+
+                    $group = 'GROUP_CONCAT(id  order by time DESC )';
+                   
+
+
+                }
+
+            }elseif($filter == "filterStatus"){
+            
+                if(  $select == "importantTasks"){
+
+                    $mysqli = $this->make_connection();
+                    $query = $mysqli->prepare("SELECT GROUP_CONCAT(id) FROM tasks WHERE ( listId = ? AND status = 'important' ) ");
+                    $query->bind_param("i" , $id);
+                    
+                    
+
+                }else{
+
+                    $mysqli = $this->make_connection();
+                    $query = $mysqli->prepare("SELECT GROUP_CONCAT(id) FROM tasks WHERE ( listId = ?  AND status = 'normal' )");
+                    $query->bind_param("i" , $id);
+
+                   
+
+
+                }
+            
+            }else{
+
+                $query = $mysqli->prepare("SELECT  GROUP_CONCAT(id) FROM tasks  WHERE listId = ? ");
+                $query->bind_param("i" , $id);
+
+            }
         }
 
-        
         
         $query->execute();
 
@@ -116,8 +163,10 @@ class PlansModel extends DataBase {
         $query->close();
         $mysqli->close();
 
-        $group_id = strval($row['GROUP_CONCAT(id)']);
+        $group_id = strval($row[$group]);
+        
 
+    
         if(empty($group_id)){
 
             return "Nothing";
@@ -133,6 +182,9 @@ class PlansModel extends DataBase {
 
         
     }
+
+
+    
 
 
     // Dit functie selecteert row uit de ingevoerd tabel
@@ -238,6 +290,41 @@ class PlansModel extends DataBase {
 
     }
 
+
+
+    protected function edit($tabel , $list_name  , $list_id , $time ,  $status){
+
+        $mysqli = $this->make_connection();
+
+        if($tabel  == "lists"){
+
+            $query = $mysqli->prepare(" UPDATE lists SET name= ? WHERE id= ? ");
+            $query->bind_param("si" , $list_name , $list_id );
+            $query->execute();
+
+        }else{
+
+            $query = $mysqli->prepare(" UPDATE tasks SET name= ? , time= ? , status = ? WHERE id= ? ");
+            $query->bind_param("sisi" , $list_name ,  $time ,  $status ,  $list_id  );
+            $query->execute();
+
+        }
+        
+        if($query){
+
+            $query->close();
+            $mysqli->close();
+
+            return "good";
+
+        }else{
+
+            return "bad";
+        }
+        
+
+ 
+    }
 
 
 }

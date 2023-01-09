@@ -12,7 +12,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"  ){
 
     if($_POST['SubmitType'] == "makeNewPlan"){
 
-        $plans_control->get_insert_into_tabels($_POST['planName'] , " " , "plans");
+        $plans_control->get_insert_into_tabels($_POST['planName'] , " " , " " ,  " " , "plans");
 
         // Hoef niet te invul de tweede argument want we hebben het niet nodig
  
@@ -93,7 +93,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"  ){
     <?php
 
 
-        $plans = $plans_control->show_user_data_from(" " , "plans"); 
+        $plans = $plans_control->show_user_data_from(" " ,  "plans" ,  " " , " " ,); 
 
         // Hoef niet te invul de eerste argument want we hebben het niet nodig
         // We selecteren plans door user id en voor dit hebben we een functie binnen select_group() function
