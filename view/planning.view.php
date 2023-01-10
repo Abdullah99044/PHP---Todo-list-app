@@ -6,7 +6,7 @@ require 'C:\Program Files\ammps2\Ampps\www\backendChallenge\toDoList\control\pla
 $app->user_authentication();
 
 $plans_control = new PLansControl;
-
+ 
 $plan_id = $_GET['plan'];
 
 
@@ -19,7 +19,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"  ){
 
         $list_name = $_POST['listName'];
         
-        $plans_control->get_insert_into_tabels($list_name , " " ,  " " , $plan_id , "lists");
+        $plans_control->get_insert_into_tabels($list_name , " " , " " ,  " " , $plan_id , "lists");
         
 
     }
@@ -29,11 +29,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"  ){
 
         $task_name = $_POST['taskName'];
         $task_time = $_POST['taskTime'];
+        $task_discription = $_POST['taskDiscription'];
          
         $list_id = $_POST['id'];
         $task_status = $_POST['status'];
 
-        $plans_control->get_insert_into_tabels($task_name , $task_time ,   $task_status ,  $list_id  , "tasks");
+        $plans_control->get_insert_into_tabels($task_name , $task_discription  , $task_time ,   $task_status ,  $list_id  , "tasks");
 
     }
 
@@ -70,7 +71,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"  ){
         $list_id   = $_POST['listId'];
         
        
-        $plans_control->control_edit("lists" , $list_name , $list_id , " " , " " );
+        $plans_control->control_edit("lists" , " " , $list_name , $list_id , " " , " " );
         
 
     }
@@ -78,13 +79,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"  ){
     if($_POST['SubmitType'] == "editTask"){
 
             
-        $task_name = $_POST['editTaskName'];
-        $task_id   = $_POST['editTaskid'];
-        $task_time   = $_POST['editTaskTime'];
-        $task_status   = $_POST['editStatus'];
+        $task_name        = $_POST['editTaskName'];
+        $task_id          = $_POST['editTaskid'];
+        $task_time        = $_POST['editTaskTime'];
+        $task_status      = $_POST['editStatus'];
+        $task_discription = $_POST['editTaskDiscription'];
         
        
-        $plans_control->control_edit("tasks" , $task_name , $task_id , $task_time , $task_status );
+        $plans_control->control_edit("tasks" , $task_discription , $task_name , $task_id , $task_time , $task_status );
         
 
     }
@@ -123,14 +125,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"  ){
 
     <article>
     
-        <button onclick="showPlanForm('planInsert')" >Make a plan</button>
+        <button class="makeListButton" onclick="showPlanForm('planInsert')" >Make a list</button>
 
 
-        <div    id="planInsert" >
+        <div  class="listInsert"  id="planInsert" >
 
             <form  action="" method="POST">
 
-                <input type="text" name="listName">
+                <input type="text" name="listName" placeholder="Write list name">
                 <input type="hidden" name="SubmitType" value="makeNewlist">
                 <input type="submit" value="Submit">
 
@@ -141,24 +143,33 @@ if($_SERVER["REQUEST_METHOD"] == "POST"  ){
         </div>
 
 
-        <form  action="" method="POST"> 
+        <div class="filter" >
 
-            <select name='filterStatusTasks' id='filterStatusTasks'>
-                    <option value='importantTasks'>Show important tasks</option>
-                    <option value='normalTasks'>Show normal tasks</option>
-            </select> 
-            <input type='hidden' name='SubmitType' value='filterStatus'> 
-            <input type='submit' name='submit' value='filter tasks time'> 
-        </form>  
+            <form  action="" method="POST"> 
 
-        <form  action="" method="POST"> 
-                  <select name='filterTimeTasks' id='filterTimeTasks'>
-                      <option value='From high to low'>From high to low</option>
-                      <option value='From low to high'>From low to hig</option>
-                  </select> 
-                <input type='hidden' name='SubmitType' value='filterTime'> 
-                 <input type='submit' name='submit' value='filter tasks time'>
-             </form> 
+                <select name='filterStatusTasks' id='filterStatusTasks'>
+                        <option value='importantTasks'>Show important tasks</option>
+                        <option value='normalTasks'>Show normal tasks</option>
+                </select> 
+                <input type='hidden' name='SubmitType' value='filterStatus'> 
+                <input type='submit' name='submit' value='filter tasks status'> 
+            </form>  
+
+        </div>
+
+
+        <div class="filter">
+
+            <form  action="" method="POST"> 
+                    <select name='filterTimeTasks' id='filterTimeTasks'>
+                        <option value='From high to low'>From the shortest task to the longest task </option>
+                        <option value='From low to high'>From the longest task to the shortest task</option>
+                    </select> 
+                    <input   type='hidden' name='SubmitType' value='filterTime'> 
+                    <input class='listFormSubmit' type='submit' name='submit' value='filter tasks time'>
+            </form> 
+
+        </div>
       
 
           <?php 

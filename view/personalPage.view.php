@@ -12,7 +12,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"  ){
 
     if($_POST['SubmitType'] == "makeNewPlan"){
 
-        $plans_control->get_insert_into_tabels($_POST['planName'] , " " , " " ,  " " , "plans");
+        $plans_control->get_insert_into_tabels($_POST['planName'] , $_POST['planDiscription'], " " , " " ,  " " , "plans");
 
         // Hoef niet te invul de tweede argument want we hebben het niet nodig
  
@@ -41,7 +41,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"  ){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-    <script src="/../../backendChallenge/toDoList/script.js" ></script>
+    <script src="/../../backendChallenge/toDoList/ss.js" ></script>
     <?php require 'C:\Program Files\ammps2\Ampps\www\backendChallenge\toDoList\style.php'; ?>  
 
 </head>
@@ -63,26 +63,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST"  ){
             <button class="makingPlanButton" onclick="showPlanForm('planInsert')" >Make a plan</button>
 
 
-            <div class="logout" >
-
-                <a  href='/../../backendChallenge/toDoList/view/logout.php'> LOGOUT </a> 
-
-            </div>
-
+            
 
         </div>
 
-            <div  style="display: none;"  id="planInsert" >
+            <div  class="makingPlanForm" style="display: block;"  id="planInsert" >
 
                 <form  action="" method="POST">
 
-                    <input type="text" name="planName">
-                    <input type="hidden" name="SubmitType" value="makeNewPlan">
-                    <input type="submit" value="Submit">
+                    <input class="makingPlanInput" type="text" name="planName" placeholder="plans name">
+                    <textarea class="makingPlanTextArea" name="planDiscription" placeholder="About your plan..." ></textarea>
+                    <input  type="hidden" name="SubmitType" value="makeNewPlan">
+                    <input class="makingPlanButton" type="submit" value="Submit">
 
                 </form>
 
-                <button onclick="hidePlanForm('planInsert')" >Forget</button>
+                <button class="makingPlanButton" onclick="hidePlanForm('planInsert')" >Forget</button>
 
 
             </div>

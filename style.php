@@ -10,23 +10,43 @@ body{
 
 header{ 
     height: 5vw;
+    width: 100%;
     background-color: greenyellow;
     box-shadow: 2px 2px 5px black;    
     padding: 0;
+    font-size: 1.05vw;
 } 
  
 
-.title {
+ .title{
 
-    height: 100%;
-    margin-top: 1.5vw;
     display: inline-block;
-     
-    padding-left: 1vw;
     width: 70%;
+    margin-left: 2vw;
     
+
+ }
+
+.logout{
+
+    display: inline-block;
+    width: 20%;
+     
 }
 
+.logout  a {
+    
+    background-color: white;
+    color: black;
+    padding: 1vw;
+    border-radius: 2vw;
+}
+ 
+
+.logout  a:hover {
+    background-color:#EEEEEE;
+     
+}
 
 
 article{ 
@@ -43,7 +63,8 @@ footer{
     display: block;
     margin-top: 90px;
     box-shadow: 2px 2px 5px black;
-    padding: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     background-color: greenyellow;
      
     text-align: center;
@@ -246,27 +267,290 @@ footer{
 }
  
 
-.logout{
 
+/* Plan maken form style in personal page */
+
+.makingPlanForm{
+
+    display: block;
+    width: 40%;
+    padding: 2vw;
+    margin-left: 28vw;
+    background-color: greenyellow;
+    border-radius: 4vw;
+
+}
+
+.makingPlanInput{
+    display: block;
+    text-align: center;
     height: 3vw;
-    width: 20%;
-    border: black 1vw;
-    border-radius: 5vw;
-    background-color: white;
+    padding: 0.5vw;
+    font-size: 2vw;
+    border-radius: 4vw;
+    margin-left: 7vw;
+}
+
+.makingPlanTextArea{
+    display: block;
+    width: 80%;
+    height: 3vw;
+    padding: 1vw;
     font-size: 1vw;
-    margin-top: 2.5vw;
-
+    border-radius: 4vw;
+    margin: 3vw;
+}
 
  
+.makingPlanButton{
+
+    display: inline-block;
+    width: 25%;
+    text-align: center;
+
+    font-size: 2vw;
+    color: black;
+    background-color: white;
+    
+    border-radius: 1vw;
+    border: 0vw;
+
+}
+
+ 
+ 
+
+/* plans style in personal page */
+
+
+.plansBox{
+
+display: block;
+padding: 2vw;
+margin: 1vw;
+background-color: #EEEEEE;
+border-radius: 4vw;
+ 
+
+}
+
+
+.planName{
+
+    display: block;
+    font-size: 2vw;
+    font-style: italic;
+
+}
+
+
+.planDiscription{
+
+    display: block;
+    margin: 2vw;
+    font-size: 1.5vw;
+
+}
+
+.planDelete{
+
+    display: inline-block;
+    width: 5%;
+    margin-right: 2vw;
+    
+}
+
+.deleteButton{
+
+
+    font-size: 1.7vw;
+    color: black;
+    background-color: greenyellow;
+    padding: 1vw;
+    border-radius: 1vw;
+    border: 0vw;
+    
+}
+
+.plansBox a {
+
+    text-align: center;
+    display: inline-block;
+    color: black;
+    width: 5%;
+    font-size: 1.7vw;
+    padding: 1vw;
+    margin-left: 1vw;
+    background-color: greenyellow;
+    border-radius: 1vw;
+    
+
+}
+
+
+/* Planning pagina style */
+
+
+.makeListButton{
+
+    margin: 3vw;
+    font-size: 1.5vw;
+}
+
+.listInsert {
+
+    display: block;
+    margin: 4vw;
+    margin-top: 1vw;
+    padding: 1vw;
+    background-color: greenyellow;
+    border-radius: 1vw;
+
+
+}
+
+.listInsert  form{
+
+    display: inline-block;
+    height: 4vw;
+    margin-right: 0px;
+    width: 40%;
+}
+
+
+.listInsert  form input{
+
+    display: inline-block;
+    margin-left: 1vw;
+   
+    font-size: 1.5vw;
+ 
+}
+
+
+.listInsert button {
+    display: inline-block;
+    width: 10%;
+    
+    font-size: 1.5vw;
+}
+
+
+.filter{
+    display: block;
+    margin: 3vw;
+}
+
+.filter form select {
+    width: 20%;
+}
+
+
+.listBox{
+
+display: block;
+padding: 2vw;
+margin: 1vw;
+background-color: #EEEEEE;
+border-radius: 4vw;
+ 
+
 }
 
  
 
-.logout:hover {
 
-    background-color: #EEEEEE;
+.listName{
+
+
+    display: block;
+    margin: 2vw 2vw 0vw 0vw;
+    
+    font-size: 2vw;
+    font-style: italic;
+
+
+}
+
+.listButton{
+
+    display: block;
+    margin: 1vw 0vw 1vw 0vw;
+    font-size: 2vw;
+   
+
+}
+
+.listFormsedit{
+
+    display: block;
+    margin: 2vw;
+
+}
+
+.listFormsedit input{
+
+    display: block;
+    
+    margin: 0vw 0vw  1vw 1vw;
+
+    
+}
+
+.listFormsedit select{
+
+    display: block;
+
+    margin: 0vw 0vw  1vw 1vw;
+
+
+}
+
+.listFormsedit textarea {
+
+    display: block;
+
+    margin: 0vw 0vw  1vw 1vw;
+}
+
+.listFormsedit button {
+
+display: block;
+
+margin: 2vw 0vw  1vw 0vw;
 }
 
 
+ 
+.taskBox{
+
+    background-color: greenyellow;
+    margin-left: 1vw;
+    padding: 2vw;
+    border-radius: 4vw;
+}
+
+
+.tasks{
+
+    display: block;
+    margin: 1vw 0vw 0vw 0vw;
+    font-size: 1.5vw;
+    font-style: italic;
+
+}
+
+.taskDescription{
+
+    display: block;
+    margin: 1vw 0vw 0vw 8vw;
+    font-size: 1vw;
+    font-style: italic;
+
+}
+
+
+ 
+ 
 
 </style>

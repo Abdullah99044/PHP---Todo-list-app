@@ -36,7 +36,7 @@ class PlansModel extends DataBase {
     // Dit functie insert data in tabels  
 
 
-    protected function insert_into_tabels($name , $time , $status ,   $id , $tabel){
+    protected function insert_into_tabels($name , $discription , $time , $status ,   $id , $tabel){
 
 
         $mysqli = $this->make_connection();
@@ -47,8 +47,8 @@ class PlansModel extends DataBase {
         if($tabel == "plans"){
 
             $id = $this->get_userId();
-            $query = $mysqli->prepare("INSERT INTO plans(name , userId ) VALUES(? , ? )  ");
-            $query->bind_param("si" , $name , $id);
+            $query = $mysqli->prepare("INSERT INTO plans(name , discription , userId ) VALUES(? , ? , ? )  ");
+            $query->bind_param("ssi" , $name , $discription ,  $id);
 
         }elseif($tabel == "lists"){
 
@@ -57,8 +57,8 @@ class PlansModel extends DataBase {
 
         }else{
 
-            $query = $mysqli->prepare("INSERT INTO tasks(name , time  , status ,   listId ) VALUES(? , ? , ? , ?)  ");
-            $query->bind_param("sisi" , $name , $time ,   $status ,   $id);
+            $query = $mysqli->prepare("INSERT INTO tasks(name , time   , discription , status ,   listId ) VALUES(? , ? , ? , ? , ?)  ");
+            $query->bind_param("sissi" , $name , $time ,  $discription ,  $status ,   $id);
         }
        
       
@@ -292,7 +292,7 @@ class PlansModel extends DataBase {
 
 
 
-    protected function edit($tabel , $list_name  , $list_id , $time ,  $status){
+    protected function edit($tabel , $description ,  $list_name  , $list_id , $time ,  $status){
 
         $mysqli = $this->make_connection();
 
@@ -304,8 +304,8 @@ class PlansModel extends DataBase {
 
         }else{
 
-            $query = $mysqli->prepare(" UPDATE tasks SET name= ? , time= ? , status = ? WHERE id= ? ");
-            $query->bind_param("sisi" , $list_name ,  $time ,  $status ,  $list_id  );
+            $query = $mysqli->prepare(" UPDATE tasks SET name= ? , time= ? , discription = ? ,  status = ? WHERE id= ? ");
+            $query->bind_param("sissi" , $list_name ,  $time ,  $description , $status ,  $list_id  );
             $query->execute();
 
         }
