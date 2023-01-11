@@ -11,10 +11,15 @@
 
     </div>
 
+    <?php  if($_SESSION["isLogged"]  == True){ ?>
+
+
     <div class="logout">
         <a href='/../../backendChallenge/toDoList/view/logout.php'> LOGOUT </a> 
 
     </div>
+
+    <?  } ?>
 
  
 </header>

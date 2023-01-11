@@ -4,6 +4,10 @@
 require 'C:\Program Files\ammps2\Ampps\www\backendChallenge\toDoList\model\signUp.model.php';
 
 
+
+// Dit class controleert de input data van de gebruiker wanneer hij siggned up   en zorget dat zijn input is niet leeg
+
+
 class SignUpControl extends SignUpModel {
 
     public function control_forms(){

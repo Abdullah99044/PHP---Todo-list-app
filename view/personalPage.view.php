@@ -20,7 +20,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"  ){
 
     if($_POST['SubmitType'] == "delete"){
         
-        echo "yes delete";
+        
         $plans_control->get_delete_info($_POST["id"] , "plans");
          
     }

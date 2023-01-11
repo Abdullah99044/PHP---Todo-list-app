@@ -8,6 +8,9 @@ require 'C:\Program Files\ammps2\Ampps\www\backendChallenge\toDoList\model\plans
 
 class PLansControl extends PlansModel {
 
+
+    // Dit is get functie van insert tabels functie in PlansModel class en zorgt dat de ingevoerd data is niet leeg
+
     public function get_insert_into_tabels($name , $discription , $time  ,   $status ,    $id , $tabel){
         
         if($tabel == "tasks"){
@@ -25,11 +28,17 @@ class PLansControl extends PlansModel {
         
     }
 
+    ###########################################################################################################################
+
+
+    // Dit functie slaant de user tasks/lists/plans op in een lijst en dan tonnen we de lijst in de view pagina met for loop
+
+
     public function show_user_data_from($id , $tabel  , $filter , $select){
 
         $data = [];
  
-        $user_data = $this->select_group($id , $tabel , $filter , $select);
+        $user_data = $this->select_all_user_data($id , $tabel , $filter , $select);
 
       
         
@@ -42,7 +51,7 @@ class PLansControl extends PlansModel {
 
             foreach($user_data as $value){
 
-                $row = $this->select_from_tabel($value , $tabel);
+                $row       = $this->select_row_from_tabel($value , $tabel);
 
                 if($tabel == "tasks"){
 
@@ -66,138 +75,47 @@ class PLansControl extends PlansModel {
 
 
     
+    ###########################################################################################################################
 
+    // Dit functie toont de plans/tasks/lists informaties in html code 
 
-    public function pp($id){
-
-        $html = " ";
-
-        
-        
-
-        
-
-        $html .= "           <br> ";
- 
-        
-        
-        #################################################
-
-        // Tijd filter
-
-
-        if($_POST['SubmitType'] == "filterTime"){
-
-            $selectTask = $_POST['filterTimeTasks'];
-            $task = $this->show_user_data_from($id ,  "tasks" ,  "filterOn" ,  $selectTask);
-            
-            if($task == "Nothing"){
-
-                $html .= "no tasks";
-
-            }else{
-
-                foreach($task as $value){
-
-                    $html .= $value  ;
-
-                }
-
-            }
-
-       
-            return $html;
-
-        }
-        
-
-        #################################################
-
-        // status filter :
-
-
-        if($_POST['SubmitType'] == "filterStatus"){
-
-            $filter_tasks = $_POST['filterStatusTasks'];
-            $task = $this->show_user_data_from($id ,  "tasks" ,  "filterStatus" ,   $filter_tasks);
-            
-            if($task == "Nothing"){
-
-                $html .= "no tasks";
-
-            }else{
-
-                foreach($task as $value){
-
-                    $html .= $value  ;
-
-                }
-
-            }
-
-       
-            return $html;
-        
-        
-        
-        
-        
-        
-        } 
-        
-
-        $task = $this->show_user_data_from($id ,  "tasks" , " " , " ");
-
-        if($task == "Nothing"){
-
-            $html .= "no tasks";
-
-        }else{
-
-            foreach($task as $value){
-
-                $html .= $value  ;
-
-            }
-
-        }
-
-        return $html;
-    
-
-        
-             
-
-
-        
-           
-    }
     public function plan_information($name , $discription , $time , $status ,  $id , $tabel){
 
         $html = " ";
         $html .= "           <br> ";
         
         if($tabel == "plans"){
+            
+            // Hier tonnen we de plans data
 
             $html .= " <div class='plansBox'> ";
             $html .= "      <div class='planName' > name :   $name </div>   " ;
             $html .= "      <div class='planDiscription' > $discription </div>   " ;
-            $html .= "      <form class='planDelete' action='' method='POST'> ";
-         
             $html .= "           <br> ";
+
+            // Door deze form kunnen we de plans verwijderen
+
+            $html .= "      <form class='planDelete' action='' method='POST'> ";
+            
             $html .= "          <input type='hidden' name='id' value='$id'> ";
-
-
             $html .= "          <input type='hidden' name='SubmitType' value='delete'> ";
             $html .= "          <input type='hidden' name='deleteType' value='plans'> ";
             $html .= "          <input class='deleteButton' type='submit' name='delete' value='delete'> ";
+
             $html .= "      </form> ";
-            $html .= " <a href='/../../backendChallenge/toDoList/view/planning.view.php?plan=$id'> edit </a> ";
+
+            // Door deze ling kunnen we de plans bewerken
+
+            $html .= " <a href='/../../backendChallenge/toDoList/view/planning.view.php?plan=$id'> edit this plan </a> ";
             $html .= " </div> ";
 
             return $html;
 
+        ################################################################################################
+
         }elseif($tabel == "lists"){
+
+            // Hier tonnen we de lists data
 
             $html .= "           <br> ";
             $html .= " <div class='listBox' > ";
@@ -213,6 +131,9 @@ class PLansControl extends PlansModel {
             $html .= "          <input type='submit' name='delete' value='Delete lsit'> ";
             $html .= "      </form> ";
             $html .= " </div> ";
+
+            ################################################################################################
+
             // Door dit form kunnen we de lijst naam aanpassen
 
             $html .= " <div class='listButton'> ";
@@ -238,7 +159,9 @@ class PLansControl extends PlansModel {
             $html .=    "     </div>     ";  
          
 
-            ##############################################################3
+            ################################################################################################
+
+            // Hier door deze form kunnen we nieuwe task toevoegen
 
             $html .= " <div class='listButton'> ";
             $html .=    " <button onclick=\"showPlanForm('taskInsert$id')\" >add task</button>";
@@ -266,17 +189,102 @@ class PLansControl extends PlansModel {
             $html .= " </div> ";
             $html .= "           <br> ";
 
-            ##############################################################3
-            $html .=  $this-> pp($id);
+            ################################################################################################
+
+
+            // Tasks tijd filter
+
+
+            if($_POST['SubmitType'] == "filterTime"){
+
+                $selectTask = $_POST['filterTimeTasks'];
+                $task = $this->show_user_data_from($id ,  "tasks" ,  "filterOn" ,  $selectTask);
+                
+                if($task == "Nothing"){
+    
+                    $html .= "no tasks";
+    
+                }else{
+    
+                    foreach($task as $value){
+    
+                        $html .= $value  ;
+    
+                    }
+    
+                }
+    
+           
+                return $html;
+    
+            }
+            
+    
+            ################################################################################################
+    
+            // Tasks status filter :
+    
+    
+            if($_POST['SubmitType'] == "filterStatus"){
+    
+                $filter_tasks = $_POST['filterStatusTasks'];
+                $task = $this->show_user_data_from($id ,  "tasks" ,  "filterStatus" ,   $filter_tasks);
+                
+                if($task == "Nothing"){
+    
+                    $html .= "no tasks";
+    
+                }else{
+    
+                    foreach($task as $value){
+    
+                        $html .= $value  ;
+    
+                    }
+    
+                }
+    
+                $html .= " </div> ";
+
+                return $html;
+            
+            } 
+            
+            ################################################################################################
+
+ 
+            //   Tasks zonder  filter tonnen 
+
+            $task = $this->show_user_data_from($id ,  "tasks" , " " , " ");
+    
+            if($task == "Nothing"){
+    
+                $html .= "no tasks";
+    
+            }else{
+    
+                foreach($task as $value){
+    
+                    $html .= $value  ;
+    
+                }
+    
+            }
 
 
             $html .= " </div> ";
 
             return $html;
-            
+        
+        ################################################################################################
 
 
         }else{ 
+
+            // Tasks tonnen
+
+
+            
 
             $html .= "<div class='taskBox' ";
             $html .= "      <div> ";
@@ -286,6 +294,8 @@ class PLansControl extends PlansModel {
             $html .= "          <div class='tasks' > About your task : </div>  ";
             $html .= "          <div class='taskDescription' > $discription  </div>  ";
 
+
+            // Door dit form kunnen we tasks verwijderen
 
             $html .= "          <form class='listButton' action='' method='POST'> ";
           
@@ -299,9 +309,9 @@ class PLansControl extends PlansModel {
             $html .=    "   <button onclick=\"showPlanForm('taskEdit$id')\" >edit task</button>";
           
 
-        
+        ################################################################################################
            
-       
+            // Door dit form kunnen we tasks  aanpassen
 
             $html .= "      <div class='listFormsedit' style='display: none;' id='taskEdit$id' > ";
             $html .= "          <form action='' method='POST'> ";
@@ -331,26 +341,35 @@ class PLansControl extends PlansModel {
         
     }
 
+    ###########################################################################################################################
+
+    // Dit is get functie van   delete info functie in PlansModel class  
+
+
     public function get_delete_info($id , $tabel){
         
         return $this->delete_info($id , $tabel);
         
-        
     }
 
-    
-
+    ###########################################################################################################################
   
+    // Dit is get functie van get plan name functie in PlansModel class  
+
     public function control_get_plan_name($plan_id){
 
         return $this->get_plan_name($plan_id);
 
     }
 
+    ###########################################################################################################################
+
+     // Dit is get functie van get edit user data functie in PlansModel class  
+
     public function control_edit($tabel ,$description ,  $name , $id , $time , $status){
 
              
-        return $this->edit($tabel , $description , $name  , $id , $time ,  $status);
+        return $this->edit_user_data($tabel , $description , $name  , $id , $time ,  $status);
             
             
         

@@ -7,6 +7,9 @@ require 'C:\Program Files\ammps2\Ampps\www\backendChallenge\toDoList\model\dataB
 class SignUpModel extends DataBase {
 
 
+
+    // Dit functie slaan de input informatie op van de nieuwe user wanner hij signed up
+
     protected function insert_user($user_name , $password , $email , $name ){
         
 
@@ -16,14 +19,14 @@ class SignUpModel extends DataBase {
         $user_name  =  $mysqli->real_escape_string($user_name); 
         $password   =  $mysqli->real_escape_string($password); 
 
-        $query = $mysqli->prepare('SELECT COUNT(*) FROM users WHERE userName= ? OR email= ?');
+        $query      =  $mysqli->prepare('SELECT COUNT(*) FROM users WHERE userName= ? OR email= ?');
         $query->bind_param("ss" ,  $user_name   , $email );
         $query->execute();
 
-        $result = $query->get_result();
+        $result     =  $query->get_result();
  
-        $row    =   $result->fetch_assoc();
-        $count  =   $row["COUNT(*)"];
+        $row        =  $result->fetch_assoc();
+        $count      =  $row["COUNT(*)"];
 
         $query->close();
 
@@ -33,7 +36,7 @@ class SignUpModel extends DataBase {
 
         }else{
 
-            $query  = $mysqli->prepare("INSERT INTO users(userName , password , email , name) VALUES( ? , ? , ? , ?)");
+            $query   = $mysqli->prepare("INSERT INTO users(userName , password , email , name) VALUES( ? , ? , ? , ?)");
             $query->bind_param("ssss"  ,  $user_name   , $password , $email , $name);
             $query->execute();
 
